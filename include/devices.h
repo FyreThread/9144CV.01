@@ -24,6 +24,12 @@ extern pros::Motor counter_roller;
 
 extern pros::MotorGroup intakeGroup;
 
+extern pros::adi::DigitalOut liftflap;
+
+extern pros::adi::DigitalOut willy;
+
+extern pros::adi::DigitalOut descore;
+
 // left motors
 extern pros::MotorGroup left_motors;
 // right motors

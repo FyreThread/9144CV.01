@@ -12,6 +12,13 @@ void PIDtune() {
 }
 
 void redSWP() {
+  chassis.setBrakeMode(pros::E_MOTOR_BRAKE_BRAKE);
+  chassis.setPose(0, 0, 0);
+
+  // Start route
+  chassis.moveToPose(-13.25, -28.5, 31, 1500,
+                     {.forwards = false});  // Move to first mogo
+  chassis.waitUntilDone();
 }
 
 void blueSWP() {

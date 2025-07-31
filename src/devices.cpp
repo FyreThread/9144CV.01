@@ -18,6 +18,12 @@
 
 namespace my_robot {
 
+pros::adi::DigitalOut liftflap('F');
+
+pros::adi::DigitalOut willy('A');
+
+pros::adi::DigitalOut descore('B');
+
 // Define motor groups and individual motors
 pros::Motor intake(9);  // Intake motor group on ports 6 and -12
 
@@ -35,16 +41,16 @@ pros::MotorGroup right_motors({18, -19, 20}, pros::MotorGearset::blue);  // Righ
 lemlib::Drivetrain drivetrain(&left_motors, &right_motors, 12.0, lemlib::Omniwheel::NEW_325, 450, 8);
 
 // Define the inertial sensor
-pros::Imu imu(15);  // Inertial sensor on port 5
+pros::Imu imu(16);  // Inertial sensor on port 5
 
 // Define the vertical encoder
-pros::Rotation vertical_encoder(5);    // Optical shaft encoder on ports 'A' and 'B'
-pros::Rotation horizontal_encoder(6);  // Optical shaft encoder on ports 'A' and 'B'
+pros::Rotation vertical_encoder(17);    // Optical shaft encoder on port
+pros::Rotation horizontal_encoder(14);  // Optical shaft encoder on port
 
 // Define the vertical tracking wheel
-lemlib::TrackingWheel vertical_tracking_wheel(&vertical_encoder, lemlib::Omniwheel::NEW_275, 0.5);
+lemlib::TrackingWheel vertical_tracking_wheel(&vertical_encoder, lemlib::Omniwheel::NEW_2, 0.5);
 // Define the vertical tracking wheel
-lemlib::TrackingWheel horizontal_tracking_wheel(&horizontal_encoder, lemlib::Omniwheel::NEW_275, .125);
+lemlib::TrackingWheel horizontal_tracking_wheel(&horizontal_encoder, lemlib::Omniwheel::NEW_2, -.5);
 
 // Setup odometry sensors
 lemlib::OdomSensors sensors(
