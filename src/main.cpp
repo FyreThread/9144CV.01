@@ -8,52 +8,6 @@
 
 using namespace my_robot;
 
-#define RED_HUE_MIN 0
-#define RED_HUE_MAX 30
-#define BLUE_HUE_MIN 180
-#define BLUE_HUE_MAX 270
-
-void sortAction() {
-  pros::screen::print(pros::E_TEXT_MEDIUM, 0, "Action 1 triggered!");
-}
-
-void colorSortBlue() {
-  extern pros::Optical colorSort;  // Sensor defined in robot-config.cpp
-  bool isBlueMode = true;          // Start in blue mode (toggle as needed)
-
-  while (true) {
-    double hue = colorSort.get_hue();
-    if (colorSort.get_proximity() < 50) {  // No object detected
-      pros::delay(100);
-      continue;
-    }
-
-    if (isBlueMode && ((hue >= RED_HUE_MIN && hue <= RED_HUE_MAX) || hue >= 330)) {
-      sortAction();
-    } else if (!isBlueMode && (hue >= BLUE_HUE_MIN && hue <= BLUE_HUE_MAX)) {
-      sortAction();
-    }
-
-    pros::delay(100);  // Prevent CPU hogging
-  }
-}
-void colorSortRed() {
-  extern pros::Optical colorSort;  // Sensor defined in robot-config.cpp
-  bool isBlueMode = false;         // Start in blue mode (toggle as needed)
-
-  while (true) {
-    double hue = colorSort.get_hue();
-
-    if (isBlueMode && ((hue >= RED_HUE_MIN && hue <= RED_HUE_MAX) || hue >= 330)) {
-      sortAction();
-    } else if (!isBlueMode && (hue >= BLUE_HUE_MIN && hue <= BLUE_HUE_MAX)) {
-      sortAction();
-    }
-
-    pros::delay(100);  // Prevent CPU hogging
-  }
-}
-
 void on_center_button() {
   static bool pressed = false;
   pressed = !pressed;
@@ -71,13 +25,25 @@ void initialize() {
 
   // Autonomous Selector using LLEMU
   ez::as::auton_selector.autons_add({
-      {"Tooning\n", high},
-      {"High\n", high},
-      {"Low\n", low},
+      {"High Red\n", highRed},
+      {"Low Red\n", lowRed},
+      {"High Blue\n", highBlue},
+      {"Low Blue\n", lowBlue},
       {"Skills\n", skills},
   });
 
   ez::as::initialize();  // Initialize autonomous selector
+
+  // Print position to brain screen
+  pros::Task screen_task([&]() {
+    while (true) {
+      // Print robot location to the brain screen
+      pros::lcd::print(5, "X: %f", chassis.getPose().x);          // X-coordinate
+      pros::lcd::print(6, "Y: %f", chassis.getPose().y);          // Y-coordinate
+      pros::lcd::print(7, "Theta: %f", chassis.getPose().theta);  // Heading
+      pros::delay(20);                                            // Delay to save resources
+    }
+  });
 }
 
 void disabled() {}
@@ -168,6 +134,8 @@ void opcontrol() {
 
     // Update the previous state after checking the button press
     prevButtonLEFTState = currentButtonLEFTState;
+
+    pros::delay(25);  // Delay for the poor IC
   }
 
   pros::delay(25);  // Delay for the poor IC

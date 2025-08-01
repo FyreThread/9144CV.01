@@ -1,6 +1,8 @@
 #pragma once
 
 void PIDtune();
-void high();
-void low();
+void highBlue();
+void lowBlue();
+void highRed();
+void lowRed();
 void skills();

@@ -22,9 +22,7 @@ pros::adi::DigitalOut liftflap('F');
 
 pros::adi::DigitalOut willy('A');
 
-pros::adi::DigitalOut descore('B');
-
-pros::v5::Optical colorSort(7);
+pros::adi::DigitalOut descore('C');
 
 // Define motor groups and individual motors
 pros::Motor intake(9);  // Intake motor group on ports 6 and -12
@@ -47,7 +45,7 @@ pros::Imu imu(16);  // Inertial sensor on port 5
 
 // Define the vertical encoder
 pros::Rotation vertical_encoder(17);    // Optical shaft encoder on port
-pros::Rotation horizontal_encoder(14);  // Optical shaft encoder on port
+pros::Rotation horizontal_encoder(15);  // Optical shaft encoder on port
 
 // Define the vertical tracking wheel
 lemlib::TrackingWheel vertical_tracking_wheel(&vertical_encoder, lemlib::Omniwheel::NEW_2, 0.5);
