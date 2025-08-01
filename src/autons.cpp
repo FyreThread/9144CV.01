@@ -7,6 +7,30 @@
 
 using namespace my_robot;
 
+void intaking() {
+  intake.move(127);
+  top_roller.move(127);
+  counter_roller.move(127);
+}
+
+void outtaking() {
+  intake.move(-80);
+  top_roller.move(-127);
+  counter_roller.move(-127);
+}
+
+void R1() {
+  intake.move(127);
+  top_roller.move(127);
+  counter_roller.move(-127);
+}
+
+void R2() {
+  intake.move(90);
+  top_roller.move(-50);
+  counter_roller.move(-127);
+}
+
 pros::v5::Optical colorSort(14);
 
 #define RED_HUE_MIN 0
@@ -17,7 +41,6 @@ pros::v5::Optical colorSort(14);
 void sortAction() {
   top_roller.move_relative(-600, -127);
 }
-
 void colorSortBlue() {
   extern pros::Optical colorSort;  // Sensor defined in robot-config.cpp
   bool isBlueMode = true;          // Start in blue mode (toggle as needed)
@@ -54,7 +77,10 @@ void colorSortRed() {
     pros::delay(100);  // Prevent CPU hogging
   }
 }
-
+//
+//
+//
+//
 // AUTONOMOUS ROUTINES
 
 void PIDtune() {
@@ -71,16 +97,73 @@ void highBlue() {
 }
 
 void lowBlue() {
+  chassis.setBrakeMode(pros::E_MOTOR_BRAKE_BRAKE);
+  chassis.setPose(0, 0, 0);
+  chassis.moveToPose(0, 3, 0, 2000, {.maxSpeed = 10});
+}
+
+void highRedBackup() {
+  liftflap.set_value(true);
+  chassis.setBrakeMode(pros::E_MOTOR_BRAKE_BRAKE);
+  chassis.setPose(0, 0, 0);
+  chassis.moveToPose(10, 15, 65, 1100, {.maxSpeed = 60});
+  intake.move(127);
+  top_roller.move(127);
+  counter_roller.move(127);
+  chassis.moveToPoint(20.8, 28, 1250, {.maxSpeed = 50});
+  chassis.turnToHeading(140, 1000);
+  chassis.waitUntilDone();
+  chassis.moveToPoint(46.35, -9, 2000, {.maxSpeed = 60});
+  chassis.waitUntilDone();
+  chassis.turnToHeading(0, 800);
+  chassis.waitUntilDone();
+  // chassis.moveToPoint(28, 8, 1750);
+  chassis.arcade(50, 0);
+  pros::delay(775);
+  chassis.arcade(-25, 0);
+  pros::delay(40);
+  chassis.arcade(0, 0);
+  liftflap.set_value(false);
+  intake.move(127);
+  top_roller.move(127);
+  counter_roller.move(-127);
+  pros::delay(10000);
+
+  if (!pros::competition::is_connected()) {
+    pros::delay(10000);
+  }
 }
 
 void highRed() {
+  liftflap.set_value(true);
   chassis.setBrakeMode(pros::E_MOTOR_BRAKE_BRAKE);
   chassis.setPose(0, 0, 0);
-  pros::Task colorSort(colorSortRed);
-
-  // Start route
-  chassis.moveToPose(-13.25, -28.5, 31, 1500);  // Move to first mogo
+  chassis.moveToPose(10, 15, 65, 1100, {.maxSpeed = 60});
+  intake.move(127);
+  top_roller.move(127);
+  counter_roller.move(127);
+  chassis.moveToPoint(20.8, 28, 1250, {.maxSpeed = 50});
+  chassis.turnToHeading(140, 1000);
   chassis.waitUntilDone();
+  chassis.moveToPoint(46.35, -9, 2000, {.maxSpeed = 60});
+  chassis.waitUntilDone();
+  chassis.turnToHeading(0, 800);
+  chassis.waitUntilDone();
+  // chassis.moveToPoint(28, 8, 1750);
+  chassis.arcade(50, 0);
+  pros::delay(775);
+  chassis.arcade(-25, 0);
+  pros::delay(40);
+  chassis.arcade(0, 0);
+  liftflap.set_value(false);
+  intake.move(127);
+  top_roller.move(127);
+  counter_roller.move(-127);
+  pros::delay(10000);
+
+  if (!pros::competition::is_connected()) {
+    pros::delay(10000);
+  }
 }
 
 void lowRed() {

@@ -1,3 +1,4 @@
+#include "EZ-Template/util.hpp"
 #include "autons.hpp"
 #include "devices.h"
 #include "includes.h"
