@@ -8,6 +8,52 @@
 
 using namespace my_robot;
 
+#define RED_HUE_MIN 0
+#define RED_HUE_MAX 30
+#define BLUE_HUE_MIN 180
+#define BLUE_HUE_MAX 270
+
+void sortAction() {
+  pros::screen::print(pros::E_TEXT_MEDIUM, 0, "Action 1 triggered!");
+}
+
+void colorSortBlue() {
+  extern pros::Optical colorSort;  // Sensor defined in robot-config.cpp
+  bool isBlueMode = true;          // Start in blue mode (toggle as needed)
+
+  while (true) {
+    double hue = colorSort.get_hue();
+    if (colorSort.get_proximity() < 50) {  // No object detected
+      pros::delay(100);
+      continue;
+    }
+
+    if (isBlueMode && ((hue >= RED_HUE_MIN && hue <= RED_HUE_MAX) || hue >= 330)) {
+      sortAction();
+    } else if (!isBlueMode && (hue >= BLUE_HUE_MIN && hue <= BLUE_HUE_MAX)) {
+      sortAction();
+    }
+
+    pros::delay(100);  // Prevent CPU hogging
+  }
+}
+void colorSortRed() {
+  extern pros::Optical colorSort;  // Sensor defined in robot-config.cpp
+  bool isBlueMode = false;         // Start in blue mode (toggle as needed)
+
+  while (true) {
+    double hue = colorSort.get_hue();
+
+    if (isBlueMode && ((hue >= RED_HUE_MIN && hue <= RED_HUE_MAX) || hue >= 330)) {
+      sortAction();
+    } else if (!isBlueMode && (hue >= BLUE_HUE_MIN && hue <= BLUE_HUE_MAX)) {
+      sortAction();
+    }
+
+    pros::delay(100);  // Prevent CPU hogging
+  }
+}
+
 void on_center_button() {
   static bool pressed = false;
   pressed = !pressed;
@@ -25,9 +71,9 @@ void initialize() {
 
   // Autonomous Selector using LLEMU
   ez::as::auton_selector.autons_add({
-      {"Tooning\n", PIDtune},
-      {"Red Solo Win Point\n", redSWP},
-      {"Blue Solo Win Point\n", blueSWP},
+      {"Tooning\n", high},
+      {"High\n", high},
+      {"Low\n", low},
       {"Skills\n", skills},
   });
 
@@ -52,6 +98,9 @@ void opcontrol() {
   bool prevButtonAState = false;
   bool lifter = false;
 
+  bool prevButtonLEFTState = false;
+  bool descorer = false;
+
   chassis.cancelAllMotions();  // Cancel all ongoing motions
   while (true) {
     int leftY = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);    // Get left joystick Y-axis value
@@ -74,8 +123,8 @@ void opcontrol() {
       top_roller.move(127);
       counter_roller.move(-127);
     } else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {  // swap main
-      intake.move(127);
-      top_roller.move(-127);
+      intake.move(90);
+      top_roller.move(-50);
       counter_roller.move(-127);
     }
 
@@ -84,7 +133,7 @@ void opcontrol() {
       top_roller.move(127);
       counter_roller.move(127);
     } else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) {
-      intake.move(-127);
+      intake.move(-80);
       top_roller.move(-127);
       counter_roller.move(-127);
     } else {
@@ -110,6 +159,15 @@ void opcontrol() {
 
     // Update the previous state after checking the button press
     prevButtonBState = currentButtonBState;
+
+    bool currentButtonLEFTState = master.get_digital(pros::E_CONTROLLER_DIGITAL_LEFT);
+    if (currentButtonBState && !prevButtonBState) {
+      descorer = !descorer;         // Toggle the state
+      descore.set_value(descorer);  // Directly set the value
+    }
+
+    // Update the previous state after checking the button press
+    prevButtonLEFTState = currentButtonLEFTState;
   }
 
   pros::delay(25);  // Delay for the poor IC

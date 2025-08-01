@@ -1,6 +1,6 @@
 #pragma once
 
 void PIDtune();
-void redSWP();
-void blueSWP();
+void high();
+void low();
 void skills();

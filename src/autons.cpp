@@ -11,17 +11,16 @@ using namespace my_robot;
 void PIDtune() {
 }
 
-void redSWP() {
+void high() {
   chassis.setBrakeMode(pros::E_MOTOR_BRAKE_BRAKE);
   chassis.setPose(0, 0, 0);
 
   // Start route
-  chassis.moveToPose(-13.25, -28.5, 31, 1500,
-                     {.forwards = false});  // Move to first mogo
+  chassis.moveToPose(-13.25, -28.5, 31, 1500);  // Move to first mogo
   chassis.waitUntilDone();
 }
 
-void blueSWP() {
+void low() {
 }
 
 void skills() {

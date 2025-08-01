@@ -24,6 +24,8 @@ pros::adi::DigitalOut willy('A');
 
 pros::adi::DigitalOut descore('B');
 
+pros::v5::Optical colorSort(7);
+
 // Define motor groups and individual motors
 pros::Motor intake(9);  // Intake motor group on ports 6 and -12
 

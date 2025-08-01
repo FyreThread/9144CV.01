@@ -30,6 +30,8 @@ extern pros::adi::DigitalOut willy;
 
 extern pros::adi::DigitalOut descore;
 
+extern pros::v5::Optical colorSort;
+
 // left motors
 extern pros::MotorGroup left_motors;
 // right motors
