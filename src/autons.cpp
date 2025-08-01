@@ -33,8 +33,8 @@ void R2() {
 
 pros::v5::Optical colorSort(14);
 
-#define RED_HUE_MIN 0
-#define RED_HUE_MAX 30
+#define RED_HUE_MIN 10
+#define RED_HUE_MAX 20
 #define BLUE_HUE_MIN 180
 #define BLUE_HUE_MAX 270
 
@@ -54,10 +54,7 @@ void colorSortBlue() {
 
     if (isBlueMode && ((hue >= RED_HUE_MIN && hue <= RED_HUE_MAX) || hue >= 330)) {
       sortAction();
-    } else if (!isBlueMode && (hue >= BLUE_HUE_MIN && hue <= BLUE_HUE_MAX)) {
-      sortAction();
     }
-
     pros::delay(100);  // Prevent CPU hogging
   }
 }
@@ -68,9 +65,7 @@ void colorSortRed() {
   while (true) {
     double hue = colorSort.get_hue();
 
-    if (isBlueMode && ((hue >= RED_HUE_MIN && hue <= RED_HUE_MAX) || hue >= 330)) {
-      sortAction();
-    } else if (!isBlueMode && (hue >= BLUE_HUE_MIN && hue <= BLUE_HUE_MAX)) {
+    if (!isBlueMode && (hue >= BLUE_HUE_MIN && hue <= BLUE_HUE_MAX)) {
       sortAction();
     }
 
@@ -111,23 +106,22 @@ void highRedBackup() {
   top_roller.move(127);
   counter_roller.move(127);
   chassis.moveToPoint(20.8, 28, 1250, {.maxSpeed = 50});
-  chassis.turnToHeading(140, 1000);
-  chassis.waitUntilDone();
-  chassis.moveToPoint(46.35, -9, 2000, {.maxSpeed = 60});
-  chassis.waitUntilDone();
-  chassis.turnToHeading(0, 800);
-  chassis.waitUntilDone();
-  // chassis.moveToPoint(28, 8, 1750);
-  chassis.arcade(50, 0);
-  pros::delay(775);
-  chassis.arcade(-25, 0);
-  pros::delay(40);
-  chassis.arcade(0, 0);
-  liftflap.set_value(false);
-  intake.move(127);
-  top_roller.move(127);
-  counter_roller.move(-127);
-  pros::delay(10000);
+  // chassis.turnToHeading(140, 1000);
+  // chassis.waitUntilDone();
+  // chassis.moveToPose(41, -9, 104, 1000, {.maxSpeed = 60});
+  // chassis.waitUntilDone();
+  // chassis.turnToHeading(120, 1000);
+  // chassis.waitUntilDone();
+  willy.set_value(true);
+  // chassis.moveToPoint(50, -15, 1000, {.maxSpeed = 60});
+
+  // chassis.moveToPose(10, 0, 65, 1100, {.maxSpeed = 60});
+  // liftflap.set_value(false);
+  // intake.move(127);
+  // top_roller.move(127);
+  // counter_roller.move(-127);
+
+  pros::delay(100000);
 
   if (!pros::competition::is_connected()) {
     pros::delay(10000);

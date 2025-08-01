@@ -26,11 +26,14 @@ void initialize() {
 
   // Autonomous Selector using LLEMU
   ez::as::auton_selector.autons_add({
+
       {"High Red\n", highRed},
       {"Low Red\n", lowRed},
       {"High Blue\n", highBlue},
       {"Low Blue\n", lowBlue},
       {"Skills\n", skills},
+      {"High Red Backup\n", highRedBackup},
+
   });
 
   ez::as::initialize();  // Initialize autonomous selector
@@ -74,7 +77,7 @@ void opcontrol() {
     int leftX = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_X);    // Get left joystick X-axis value
     int rightX = controller.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_X);  // Get right joystick X-axis value
 
-    chassis.arcade(leftY, rightX * 0.7);
+    chassis.arcade(leftY, rightX * 0.9);
 
     // Check if the robot is not connected to the competition control
     if (!pros::competition::is_connected()) {
@@ -89,9 +92,10 @@ void opcontrol() {
       intake.move(127);
       top_roller.move(127);
       counter_roller.move(-127);
+      liftflap.set_value(false);                                         // Lift flap
     } else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {  // swap main
-      intake.move(90);
-      top_roller.move(-50);
+      intake.move(127);
+      top_roller.move(-127);
       counter_roller.move(-127);
     }
 
@@ -99,6 +103,7 @@ void opcontrol() {
       intake.move(127);
       top_roller.move(127);
       counter_roller.move(127);
+      liftflap.set_value(true);  // Lift flap up
     } else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) {
       intake.move(-80);
       top_roller.move(-127);

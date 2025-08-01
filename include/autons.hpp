@@ -6,3 +6,4 @@ void lowBlue();
 void highRed();
 void lowRed();
 void skills();
+void highRedBackup();
