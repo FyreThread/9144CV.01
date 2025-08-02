@@ -19,6 +19,24 @@ void on_center_button() {
   }
 }
 
+void controllerOdom() {
+  while (true) {
+    // Get current pose
+    lemlib::Pose pose = chassis.getPose();
+
+    // Format
+    std::string odom_data = "X: " + std::to_string(pose.x) +
+                            ", Y: " + std::to_string(pose.y) +
+                            ", Theta: " + std::to_string(pose.theta);
+
+    // Update Display
+    master.set_text(2, 0, odom_data);
+
+    // Delay
+    pros::delay(3000);
+  }
+}
+
 void initialize() {
   pros::lcd::initialize();                          // Initialize brain screen
   chassis.calibrate();                              // Calibrate sensors
@@ -26,11 +44,12 @@ void initialize() {
 
   // Autonomous Selector using LLEMU
   ez::as::auton_selector.autons_add({
+
       {"First\n", leftRed},
       {"High Red\n", highRed},
       {"Left Red\n", leftRed},
-      {"High Blue\n", highBlue},
-      {"Low Blue\n", lowBlue},
+      {"High Blue\n", leftBlue},
+      {"Low Blue\n", rightBlue},
       {"Skills\n", skills},
       {"High Red Backup\n", highRedBackup},
 
@@ -48,6 +67,7 @@ void initialize() {
       pros::delay(20);                                            // Delay to save resources
     }
   });
+  pros::Task displayOdom(controllerOdom);  // Start odometry display task
 }
 
 void disabled() {}
@@ -110,7 +130,7 @@ void opcontrol() {
       counter_roller.move(-127);
     } else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_Y)) {
       intake.move(127);
-      top_roller.move(25);
+      top_roller.move(38);
       counter_roller.move(-127);
     } else {
       intake.move(0);          // Stop intake motor

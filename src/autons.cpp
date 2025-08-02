@@ -79,19 +79,60 @@ void colorSortRed() {
 // AUTONOMOUS ROUTINES
 
 void PIDtune() {
-}
-
-void highBlue() {
   chassis.setBrakeMode(pros::E_MOTOR_BRAKE_BRAKE);
   chassis.setPose(0, 0, 0);
-  pros::Task colorSort(colorSortBlue);
-
-  // Start route
-  chassis.moveToPose(-13.25, -28.5, 31, 1500);  // Move to first mogo
+  chassis.turnToHeading(90, 1000000);
   chassis.waitUntilDone();
+  if (!pros::competition::is_connected()) {
+    pros::delay(10000);
+  }
 }
 
-void lowBlue() {
+void leftBlue() {
+  chassis.setBrakeMode(pros::E_MOTOR_BRAKE_BRAKE);
+  chassis.setPose(0, 0, 0);
+  liftflap.set_value(true);
+  intake.move(127);
+  top_roller.move(127);
+  counter_roller.move(127);
+  chassis.moveToPose(-4, 10, -30, 300);
+  chassis.moveToPose(-10, 17, -47, 1100);
+  chassis.waitUntilDone();
+  chassis.moveToPose(-13.18, 17.86, -59.62, 500);
+  chassis.waitUntilDone();
+  chassis.turnToHeading(-43.89, 500);
+  chassis.waitUntilDone();
+  chassis.moveToPose(-17.75, 23.29, -44.72, 800);
+  chassis.waitUntilDone();
+  chassis.turnToHeading(43.00, 600);
+  chassis.waitUntilDone();
+  chassis.moveToPose(-8.5, 28.8, 43, 1000);
+  chassis.waitUntilDone();
+  liftflap.set_value(false);
+  intake.move(127);
+  top_roller.move(39);
+  counter_roller.move(-127);
+  pros::delay(3000);
+  intake.move(0);
+  top_roller.move(0);
+  counter_roller.move(0);
+  chassis.turnToHeading(231.90, 600);
+  chassis.waitUntilDone();
+  chassis.moveToPose(-41.60, -1.85, 226, 1200);
+  chassis.waitUntilDone();
+  chassis.turnToHeading(176.14, 600);
+  chassis.waitUntilDone();
+  chassis.moveToPose(-41.19, -12.39, 176, 700);
+  chassis.waitUntilDone();
+  willy.set_value(true);
+  chassis.moveToPoint(-40.68, -18.54, 700);
+
+  if (!pros::competition::is_connected()) {
+    pros::delay(10000);
+  }
+}
+
+void rightBlue() {
   chassis.setBrakeMode(pros::E_MOTOR_BRAKE_BRAKE);
   chassis.setPose(0, 0, 0);
   chassis.moveToPose(0, 3, 0, 2000, {.maxSpeed = 10});
@@ -101,25 +142,18 @@ void highRedBackup() {
   liftflap.set_value(true);
   chassis.setBrakeMode(pros::E_MOTOR_BRAKE_BRAKE);
   chassis.setPose(0, 0, 0);
-  chassis.moveToPose(10, 15, 65, 1100, {.maxSpeed = 60});
+  chassis.moveToPose(5.9, 12, 33, 120);
+  chassis.waitUntilDone();
   intake.move(127);
   top_roller.move(127);
   counter_roller.move(127);
-  chassis.moveToPoint(20.8, 28, 1250, {.maxSpeed = 50});
-  // chassis.turnToHeading(140, 1000);
-  // chassis.waitUntilDone();
-  // chassis.moveToPose(41, -9, 104, 1000, {.maxSpeed = 60});
-  // chassis.waitUntilDone();
-  // chassis.turnToHeading(120, 1000);
-  // chassis.waitUntilDone();
-  willy.set_value(true);
-  // chassis.moveToPoint(50, -15, 1000, {.maxSpeed = 60});
+  chassis.moveToPose(12, 16.5, 50, 900);
+  chassis.waitUntilDone();
+  chassis.moveToPose(13.6, 15.6, 55.5, 900);
+  chassis.waitUntilDone();
+  chassis.turnToHeading(40, 1000);
 
-  // chassis.moveToPose(10, 0, 65, 1100, {.maxSpeed = 60});
-  // liftflap.set_value(false);
-  // intake.move(127);
-  // top_roller.move(127);
-  // counter_roller.move(-127);
+  // willy.set_value(true);
 
   pros::delay(100000);
 
@@ -161,11 +195,25 @@ void highRed() {
 }
 
 void leftRed() {
-  liftflap.set_value(true);
+  // liftflap.set_value(true);
   chassis.setBrakeMode(pros::E_MOTOR_BRAKE_BRAKE);
   chassis.setPose(0, 0, 0);
+  chassis.moveToPose(23.75, 34.25, 90, 3000, {.maxSpeed = 75});
+  chassis.waitUntilDone();
+  intake.move(127);
+  top_roller.move(127);
+  counter_roller.move(-127);
+  pros::delay(1200);
+  intake.move(0);
+  top_roller.move(0);
+  counter_roller.move(-0);
+  chassis.moveToPoint(14.25, 34.25, 1300, {.forwards = false, .maxSpeed = 100});
+  chassis.waitUntilDone();
+  chassis.turnToHeading(270, 1000);
+  willy.set_value(true);
 
-  
+  if (!pros::competition::is_connected())
+    pros::delay(10000);
 }
 
 void skills() {

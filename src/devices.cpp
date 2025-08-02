@@ -38,14 +38,14 @@ pros::MotorGroup left_motors({-11, 12, -13}, pros::MotorGearset::blue);  // Left
 pros::MotorGroup right_motors({18, -19, 20}, pros::MotorGearset::blue);  // Right motors on ports 7, -9, 10
 
 // Define the drivetrain
-lemlib::Drivetrain drivetrain(&left_motors, &right_motors, 12.0, lemlib::Omniwheel::NEW_325, 450, 8);
+lemlib::Drivetrain drivetrain(&left_motors, &right_motors, 12.0, lemlib::Omniwheel::NEW_325, 450, 2);
 
 // Define the inertial sensor
 pros::Imu imu(16);  // Inertial sensor on port 5
 
 // Define the vertical encoder
-pros::Rotation vertical_encoder(17);    // Optical shaft encoder on port
-pros::Rotation horizontal_encoder(15);  // Optical shaft encoder on port
+pros::Rotation vertical_encoder(17);     // Optical shaft encoder on port
+pros::Rotation horizontal_encoder(-15);  // Optical shaft encoder on port
 
 // Define the vertical tracking wheel
 lemlib::TrackingWheel vertical_tracking_wheel(&vertical_encoder, lemlib::Omniwheel::NEW_2, 0.5);
@@ -79,7 +79,7 @@ lemlib::ControllerSettings angular_controller(
     0.00,  // Integral gain (kI)
     23,    // Derivative gain (kD)
     0,     // Anti windup
-    0,     // Small error range, in degrees
+    .8,    // Small error range, in degrees
     0,     // Small error range timeout, in milliseconds
     0,     // Large error range, in degrees
     0,     // Large error range timeout, in milliseconds
