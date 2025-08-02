@@ -160,7 +160,12 @@ void highRed() {
   }
 }
 
-void lowRed() {
+void leftRed() {
+  liftflap.set_value(true);
+  chassis.setBrakeMode(pros::E_MOTOR_BRAKE_BRAKE);
+  chassis.setPose(0, 0, 0);
+
+  
 }
 
 void skills() {

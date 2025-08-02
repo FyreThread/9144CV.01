@@ -26,9 +26,9 @@ void initialize() {
 
   // Autonomous Selector using LLEMU
   ez::as::auton_selector.autons_add({
-
+      {"First\n", leftRed},
       {"High Red\n", highRed},
-      {"Low Red\n", lowRed},
+      {"Left Red\n", leftRed},
       {"High Blue\n", highBlue},
       {"Low Blue\n", lowBlue},
       {"Skills\n", skills},
@@ -108,6 +108,10 @@ void opcontrol() {
       intake.move(-80);
       top_roller.move(-127);
       counter_roller.move(-127);
+    } else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_Y)) {
+      intake.move(127);
+      top_roller.move(25);
+      counter_roller.move(-127);
     } else {
       intake.move(0);          // Stop intake motor
       top_roller.move(0);      // Stop top roller motor
@@ -116,8 +120,8 @@ void opcontrol() {
 
     bool currentButtonAState = master.get_digital(pros::E_CONTROLLER_DIGITAL_A);
     if (currentButtonAState && !prevButtonAState) {
-      lifter = !lifter;            // Toggle the state
-      liftflap.set_value(lifter);  // Directly set the value
+      lifter = !lifter;         // Toggle the state
+      willy.set_value(lifter);  // Directly set the value
     }
 
     // Update the previous state after checking the button press

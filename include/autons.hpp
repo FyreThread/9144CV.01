@@ -4,6 +4,6 @@ void PIDtune();
 void highBlue();
 void lowBlue();
 void highRed();
-void lowRed();
+void leftRed();
 void skills();
 void highRedBackup();
